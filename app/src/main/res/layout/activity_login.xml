@@ -5,36 +5,55 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <EditText
-        android:id="@+id/editTextUsername"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:autofillHints="no"
-        android:hint="Username"
-        android:inputType="text"
-        android:minHeight="48dp"
-        tools:ignore="HardcodedText" />
+        android:layout_marginTop="20dp"
+        android:hint="Username">
 
-    <EditText
-        android:id="@+id/editTextPassword"
+        <EditText
+            android:id="@+id/editTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextUsername"
+        android:layout_below="@id/tilUsername"
         android:layout_marginTop="16dp"
-        android:hint="Password"
-        android:importantForAutofill="no"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        tools:ignore="HardcodedText" />
+        android:hint="Password">
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextPassword"
+        android:layout_below="@id/tilPassword"
         android:layout_marginTop="24dp"
-        android:text="Login"
-        tools:ignore="HardcodedText" />
+        android:text="Login" />
+
+    <TextView
+        android:id="@+id/tvRegisterLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnLogin"
+        android:layout_marginTop="16dp"
+        android:text="Want to create an account? Login"
+        android:clickable="true"
+        android:textColor="@color/green"
+        android:textStyle="bold"
+        android:onClick="goToRegister" />
 
 </RelativeLayout>
