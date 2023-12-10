@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/btnLogin"
         android:layout_marginTop="16dp"
-        android:text="Want to create an account? Login"
+        android:text="Want to create an account? Register"
         android:clickable="true"
         android:textColor="@color/green"
         android:textStyle="bold"
