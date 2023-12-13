@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
     tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="-200dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+        tools:src="@drawable/metro"
+        android:src="@drawable/metro"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilUsername"
-        android:layout_width="match_parent"
+        android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Username">
+        android:layout_marginTop="16dp"
+        android:hint="Username"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView">
 
         <EditText
             android:id="@+id/editTextUsername"
@@ -22,11 +45,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilPassword"
-        android:layout_width="match_parent"
+        android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tilUsername"
         android:layout_marginTop="16dp"
-        android:hint="Password">
+        android:hint="Password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilUsername">
 
         <EditText
             android:id="@+id/editTextPassword"
@@ -38,22 +63,32 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
+        android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tilPassword"
-        android:layout_marginTop="24dp"
-        android:text="Login" />
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_background"
+        android:text="Log in"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilPassword" />
 
     <TextView
         android:id="@+id/tvRegisterLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnLogin"
-        android:layout_marginTop="16dp"
-        android:text="Want to create an account? Register"
+        android:layout_marginTop="10dp"
+        android:text="Want to create an account?"
         android:clickable="true"
-        android:textColor="@color/green"
+        android:textColor="@android:color/holo_green_dark"
         android:textStyle="bold"
-        android:onClick="goToRegister" />
+        android:onClick="goToRegister"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

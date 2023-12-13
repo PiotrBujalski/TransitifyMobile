@@ -56,17 +56,19 @@
         android:id="@+id/btnLogin"
         android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="176dp"
         android:background="@drawable/button_background"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:text="Sign In"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
 
-        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
+
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="370dp"
@@ -80,6 +82,7 @@
         android:paddingEnd="16dp"
 
         app:layout_constraintTop_toBottomOf="@id/btnLogin"
+        app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
