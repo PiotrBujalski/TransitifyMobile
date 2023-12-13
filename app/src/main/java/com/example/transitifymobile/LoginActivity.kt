@@ -112,6 +112,15 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, LoginAndRegisterActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         if (::mongoClient.isInitialized) {
