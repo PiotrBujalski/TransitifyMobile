@@ -5,4 +5,8 @@
     <color name="whiter">#D8DADC</color>
     <color name="green">#4fa853</color>
     <color name="blue">#59b5df</color>
+    <color name="graylight">#BEBEBE</color>
+    <color name="startblue">#2F4F4F</color>
+    <color name="endblue">#32CD32</color>
+    <color name="colorAccent">#D81B60</color>
 </resources>

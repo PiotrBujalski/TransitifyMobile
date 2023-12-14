@@ -78,7 +78,7 @@ class RegisterActivity : AppCompatActivity() {
                             .append("PasswordHash", hashPassword(password))
                             .append("Name", name)
                             .append("Surname", surname)
-                            .append("Balance", "0.0")
+                            .append("Balance", 0.0)
 
                         try {
                             usersCollection.insertOne(newUser)

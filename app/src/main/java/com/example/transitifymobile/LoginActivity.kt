@@ -62,8 +62,10 @@ class LoginActivity : AppCompatActivity() {
                                 val storedPasswordHash = userDocument.getString("PasswordHash")
 
                                 if (BCrypt.verifyer().verify(enteredPassword.toCharArray(), storedPasswordHash).verified) {
+                                    val userId = userDocument.getInteger("UserId")
                                     showToast("Login successful")
-                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                    val intent = Intent(this@LoginActivity, PaymentMenuActivity::class.java)
+                                    intent.putExtra("userId", userId)
                                     startActivity(intent)
                                     finish()
                                 } else {

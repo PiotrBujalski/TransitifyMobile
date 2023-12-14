@@ -28,10 +28,16 @@
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
+        <activity
+            android:name=".TicketsMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PaymentMenuActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
