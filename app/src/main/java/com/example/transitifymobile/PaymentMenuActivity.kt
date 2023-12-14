@@ -55,7 +55,12 @@ class PaymentMenuActivity : AppCompatActivity() {
 
             if (amountText.isNotEmpty()) {
                 val amount = amountText.toDouble()
-                addFundsToUserBalance(amount)
+
+                if (amount > 0) {
+                    addFundsToUserBalance(amount)
+                } else {
+                    showToast("Please enter amount greater than 0.")
+                }
             } else {
                 showToast("Please enter a valid amount.")
             }
@@ -99,7 +104,6 @@ class PaymentMenuActivity : AppCompatActivity() {
                 val currentBalance = userDocument.getDouble("Balance") ?: 0.0
 
                 withContext(Dispatchers.Main) {
-                    // Update the TextView with the user balance
                     balanceTextView.text = "Balance: $currentBalance zł"
                 }
             }

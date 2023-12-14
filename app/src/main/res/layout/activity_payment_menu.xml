@@ -50,12 +50,101 @@
 
     <View
     android:id="@+id/whiteBar"
-    android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_width="0dp"
+    android:layout_height="100dp"
     android:background="@drawable/bordered_background"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/whiteBar"
+        app:layout_constraintEnd_toEndOf="@id/whiteBar"
+        app:layout_constraintStart_toStartOf="@id/whiteBar"
+        app:layout_constraintTop_toTopOf="@id/whiteBar">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp">
+
+            <ImageButton
+                android:id="@+id/imageButton1"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ticket"
+                android:background="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageButton1"
+                android:layout_centerHorizontal="true"
+                android:text="Tickets"
+                android:textColor="#FFFFFF"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp">
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/cart"
+                android:background="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageButton2"
+                android:layout_centerHorizontal="true"
+                android:text="Shop"
+                android:textColor="#FFFFFF"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp">
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/wallet"
+                android:background="@android:color/black"
+                app:tint="@color/blue" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageButton3"
+                android:layout_centerHorizontal="true"
+                android:text="Wallet"
+                android:textColor="@android:color/holo_blue_bright"/>
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/EditText"
@@ -63,7 +152,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/edit_text_custom_background"
         android:hint="zł"
-        android:inputType="textEmailAddress"
+        android:inputType="numberDecimal"
         android:minHeight="48dp"
         android:padding="8dp"
         android:gravity="end"
@@ -79,7 +168,7 @@
         android:id="@+id/myButton"
         android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="244dp"
+        android:layout_marginTop="144dp"
         android:background="@drawable/button_register_with_black"
         android:drawablePadding="8dp"
         android:paddingStart="16dp"
