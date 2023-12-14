@@ -1,15 +1,19 @@
 package com.example.transitifymobile
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import org.bson.Document
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -20,6 +24,7 @@ class PaymentMenuActivity : AppCompatActivity() {
     private lateinit var editTextAmount: EditText
     private lateinit var btnAddFunds: Button
     private lateinit var balanceTextView: TextView
+    private lateinit var profileImageButton: ImageButton
 
     private lateinit var mongoClient: MongoClient
     private lateinit var mongoDatabase: MongoDatabase
@@ -32,6 +37,7 @@ class PaymentMenuActivity : AppCompatActivity() {
         editTextAmount = findViewById(R.id.EditText)
         btnAddFunds = findViewById(R.id.myButton)
         balanceTextView = findViewById(R.id.balanceTextView)
+        profileImageButton = findViewById(R.id.profileImageButton)
 
         try {
             mongoClient = MongoDBHelper.connect()
@@ -54,13 +60,16 @@ class PaymentMenuActivity : AppCompatActivity() {
                 showToast("Please enter a valid amount.")
             }
         }
+
+        profileImageButton.setOnClickListener {
+            showPopupMenu(it)
+        }
     }
 
     private fun addFundsToUserBalance(amount: Double) {
         val userId = intent.getIntExtra("userId", -1)
 
         GlobalScope.launch(Dispatchers.IO) {
-            // Fetch the user document from the database
             val userDocument = usersCollection.find(Document("UserId", userId)).first()
 
             if (userDocument != null) {
@@ -95,6 +104,29 @@ class PaymentMenuActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(this, view)
+        popupMenu.menuInflater.inflate(R.menu.profile_menu, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_logout -> {
+                    logout()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popupMenu.show()
+    }
+
+    private fun logout() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     override fun onDestroy() {

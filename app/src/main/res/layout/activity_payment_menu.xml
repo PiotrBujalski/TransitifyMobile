@@ -7,6 +7,15 @@
     android:background="#FFFFFF"
     tools:context=".PaymentMenuActivity">
 
+    <ImageButton
+        android:id="@+id/profileImageButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"/>
+
 <View
     android:id="@+id/blackBar"
     android:layout_width="0dp"
@@ -25,6 +34,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"/>
+
+
 
     <TextView
         android:id="@+id/balanceTextView"
