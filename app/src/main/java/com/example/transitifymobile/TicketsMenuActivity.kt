@@ -22,8 +22,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class TicketsMenuActivity : AppCompatActivity() {
 
@@ -105,12 +107,17 @@ class TicketsMenuActivity : AppCompatActivity() {
 
                     val typeTextView: TextView = ticketView.findViewById(R.id.ticketTypeTextView)
                     val timeTextView: TextView = ticketView.findViewById(R.id.ticketTimeTextView)
-                    val priceTextView: TextView = ticketView.findViewById(R.id.ticketPriceTextView)
+                    val dateTextView: TextView = ticketView.findViewById(R.id.ticketDateTextView)
 
                     val ticketType = ticket.getString("Type")
-                    typeTextView.text = "$ticketType"
+                    val ticketDate = ticket.getDate("TimeExpiration")
+
+                    typeTextView.text = ticketType
                     timeTextView.text = "${ticket.getInteger("Time")} minut"
-                    priceTextView.text = "${ticket.getDouble("Price")} zł"
+
+                    if (ticketDate != null) {
+                        dateTextView.text = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault()).format(ticketDate)
+                    }
 
                     if (ticketType == "Ulgowy") {
                         ticketView.setBackgroundColor(resources.getColor(android.R.color.holo_orange_light))
@@ -173,7 +180,11 @@ class TicketsMenuActivity : AppCompatActivity() {
     }
 
     private fun generateQRCode(Name: String, Surname: String, Type: String, TimeActivation: Date, TimeExpiration: Date): ByteArray {
-        val userDetails = "Imie: $Name\nNazwisko: $Surname\nTyp biletu: $Type\nData aktywacji: $TimeActivation\nData wygasniecia: $TimeExpiration"
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+        val formattedTimeActivation = TimeActivation.let { dateFormat.format(it) }
+        val formattedTimeExpiration = TimeExpiration.let { dateFormat.format(it) }
+
+        val userDetails = "Imie: $Name\nNazwisko: $Surname\nTyp biletu: $Type\nData aktywacji: $formattedTimeActivation\nData wygasniecia: $formattedTimeExpiration"
         val barcodeEncoder = BarcodeEncoder()
         val bitmap = barcodeEncoder.encodeBitmap(userDetails, BarcodeFormat.QR_CODE, 1200, 1200)
         val outputStream = ByteArrayOutputStream()
@@ -184,12 +195,14 @@ class TicketsMenuActivity : AppCompatActivity() {
     private fun updateTicketActivationTime(ticketId: Int, ticketTime: Int) {
         GlobalScope.launch(Dispatchers.IO) {
             val currentDate = Date()
-            val expirationDate = calculateExpirationDate(currentDate, ticketTime)
+            val oneHourInMillis: Long = 1 * 60 * 60 * 1000
+            val currentDatePlusOneHour = Date(currentDate.time + oneHourInMillis)
+            val expirationDate = calculateExpirationDate(currentDatePlusOneHour, ticketTime)
 
             ticketsCollection.updateOne(
                 Document("TicketId", ticketId),
                 Document("\$set",
-                    Document("TimeActivation", currentDate)
+                    Document("TimeActivation", currentDatePlusOneHour)
                         .append("TimeExpiration", expirationDate)
                         .append("IsActive", true)
                 )
@@ -201,11 +214,16 @@ class TicketsMenuActivity : AppCompatActivity() {
         }
     }
 
-    private fun calculateExpirationDate(startDate: Date, ticketTime: Int): Date {
+    private fun calculateExpirationDate(startDate: Date, ticketTime: Int): Date? {
         val calendar = Calendar.getInstance()
         calendar.time = startDate
+
         calendar.add(Calendar.MINUTE, ticketTime)
-        return calendar.time
+
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
+        val formattedDate = dateFormat.format(calendar.time)
+
+        return dateFormat.parse(formattedDate)
     }
 
     private fun fetchUserBalance() {

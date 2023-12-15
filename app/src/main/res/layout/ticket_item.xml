@@ -24,11 +24,11 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/ticketPriceTextView"
+        android:id="@+id/ticketDateTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Ticket Price"
+        android:text="Nieaktywny"
         android:textSize="16sp"
         android:textStyle="bold"/>
 
