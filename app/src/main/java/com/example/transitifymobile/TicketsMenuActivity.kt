@@ -98,7 +98,7 @@ class TicketsMenuActivity : AppCompatActivity() {
             val tickets = ticketsCollection.find(Document("UserId", userId)).toList()
 
             withContext(Dispatchers.Main) {
-                ticketsContainer.removeAllViews()  // Clear existing views
+                ticketsContainer.removeAllViews()
 
                 for (ticket in tickets) {
                     val ticketView = layoutInflater.inflate(R.layout.ticket_item, null)
@@ -149,6 +149,7 @@ class TicketsMenuActivity : AppCompatActivity() {
                                         intent.putExtra("qrCodeBytes", qrCodeBytes)
                                         intent.putExtra("userId", userId)
                                         startActivity(intent)
+                                        finish()
                                     }
                                 }
                             }
