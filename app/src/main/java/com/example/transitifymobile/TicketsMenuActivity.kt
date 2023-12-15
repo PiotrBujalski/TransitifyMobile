@@ -218,7 +218,8 @@ class TicketsMenuActivity : AppCompatActivity() {
                 val currentBalance = userDocument.getDouble("Balance") ?: 0.0
 
                 withContext(Dispatchers.Main) {
-                    balanceTextView.text = "Balance: $currentBalance zł"
+                    val formattedBalance = String.format("%.2f", currentBalance)
+                    balanceTextView.text = "Balance: $formattedBalance zł"
                 }
             }
         }

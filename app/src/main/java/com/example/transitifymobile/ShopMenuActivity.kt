@@ -135,7 +135,6 @@ class ShopMenuActivity : AppCompatActivity() {
                         updateBalance(userId, price)
 
                     } else {
-                        // Insufficient balance, show an error message
                         withContext(Dispatchers.Main) {
                             showToast("Not enough balance to buy the ticket!")
                         }
@@ -179,7 +178,8 @@ class ShopMenuActivity : AppCompatActivity() {
                     )
 
                     withContext(Dispatchers.Main) {
-                        balanceTextView.text = "Balance: $newBalance zł"
+                        val formattedBalance = String.format("%.2f", newBalance)
+                        balanceTextView.text = "Balance: $formattedBalance zł"
                     }
                 }
             } catch (e: Exception) {
@@ -199,7 +199,8 @@ class ShopMenuActivity : AppCompatActivity() {
                 val currentBalance = userDocument.getDouble("Balance") ?: 0.0
 
                 withContext(Dispatchers.Main) {
-                    balanceTextView.text = "Balance: $currentBalance zł"
+                    val formattedBalance = String.format("%.2f", currentBalance)
+                    balanceTextView.text = "Balance: $formattedBalance zł"
                 }
             }
         }
