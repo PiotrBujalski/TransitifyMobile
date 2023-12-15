@@ -38,6 +38,9 @@
         <activity
             android:name=".PaymentMenuActivity"
             android:exported="false" />
+        <activity
+            android:name=".ShopMenuActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

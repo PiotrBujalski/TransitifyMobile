@@ -1,35 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TicketsMenuActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
+    tools:context=".PaymentMenuActivity">
 
-    <TextView
-        android:id="@+id/numberTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="10"
-        android:textSize="24sp"
-        android:layout_centerHorizontal="true"
+    <ImageButton
+        android:id="@+id/profileImageButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"/>
 
-    <Button
-        android:id="@+id/ulgowyButton"
+    <View
+        android:id="@+id/blackBar"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:background="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/baseline_person_196"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"/>
+
+
+
+    <TextView
+        android:id="@+id/balanceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ulgowy"
-        android:layout_below="@id/numberTextView"
-        android:layout_marginTop="16dp"
+        android:text="Balance: 0 zł"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconImageView"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"/>
 
-    <Button
-        android:id="@+id/normalnyButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="normalny"
-        android:layout_below="@id/ulgowyButton"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"/>
+    <View
+        android:id="@+id/whiteBar"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@drawable/bordered_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/whiteBar"
+        app:layout_constraintEnd_toEndOf="@id/whiteBar"
+        app:layout_constraintStart_toStartOf="@id/whiteBar"
+        app:layout_constraintTop_toTopOf="@id/whiteBar">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp">
+
+            <ImageButton
+                android:id="@+id/ticketsImageButton"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ticket"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/black"
+                app:tint="@color/blue" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ticketsImageButton"
+                android:layout_centerHorizontal="true"
+                android:text="Tickets"
+                android:textColor="@color/blue"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp">
+
+            <ImageButton
+                android:id="@+id/shopImageButton"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/cart"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/black"
+                app:tint="@color/white"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/shopImageButton"
+                android:layout_centerHorizontal="true"
+                android:text="Shop"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp">
+
+            <ImageButton
+                android:id="@+id/walletImageButton"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/wallet"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/black"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/walletImageButton"
+                android:layout_centerHorizontal="true"
+                android:text="Wallet"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

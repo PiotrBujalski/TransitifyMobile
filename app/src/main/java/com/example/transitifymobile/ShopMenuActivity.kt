@@ -19,10 +19,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PaymentMenuActivity : AppCompatActivity() {
+class ShopMenuActivity : AppCompatActivity() {
 
-    private lateinit var editTextAmount: EditText
-    private lateinit var btnAddFunds: Button
     private lateinit var balanceTextView: TextView
     private lateinit var profileImageButton: ImageButton
     private lateinit var ticketsImageButton: ImageButton
@@ -32,13 +30,10 @@ class PaymentMenuActivity : AppCompatActivity() {
     private lateinit var mongoClient: MongoClient
     private lateinit var mongoDatabase: MongoDatabase
     private lateinit var usersCollection: MongoCollection<Document>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payment_menu)
+        setContentView(R.layout.activity_shop_menu)
 
-        editTextAmount = findViewById(R.id.EditText)
-        btnAddFunds = findViewById(R.id.myButton)
         balanceTextView = findViewById(R.id.balanceTextView)
         profileImageButton = findViewById(R.id.profileImageButton)
         ticketsImageButton = findViewById(R.id.ticketsImageButton)
@@ -56,22 +51,6 @@ class PaymentMenuActivity : AppCompatActivity() {
 
         fetchUserBalance()
 
-        btnAddFunds.setOnClickListener {
-            val amountText = editTextAmount.text.toString().trim()
-
-            if (amountText.isNotEmpty()) {
-                val amount = amountText.toDouble()
-
-                if (amount > 0) {
-                    addFundsToUserBalance(amount)
-                } else {
-                    showToast("Please enter amount greater than 0.")
-                }
-            } else {
-                showToast("Please enter a valid amount.")
-            }
-        }
-
         profileImageButton.setOnClickListener {
             showPopupMenu(it)
         }
@@ -79,47 +58,24 @@ class PaymentMenuActivity : AppCompatActivity() {
         val userId = intent.getIntExtra("userId", -1)
 
         ticketsImageButton.setOnClickListener {
-            val intent = Intent(this@PaymentMenuActivity, TicketsMenuActivity::class.java)
+            val intent = Intent(this@ShopMenuActivity, TicketsMenuActivity::class.java)
             intent.putExtra("userId", userId)
             startActivity(intent)
             finish()
         }
 
         shopImageButton.setOnClickListener {
-            val intent = Intent(this@PaymentMenuActivity, ShopMenuActivity::class.java)
+            val intent = Intent(this@ShopMenuActivity, ShopMenuActivity::class.java)
             intent.putExtra("userId", userId)
             startActivity(intent)
             finish()
         }
 
         walletImageButton.setOnClickListener {
-            val intent = Intent(this@PaymentMenuActivity, PaymentMenuActivity::class.java)
+            val intent = Intent(this@ShopMenuActivity, PaymentMenuActivity::class.java)
             intent.putExtra("userId", userId)
             startActivity(intent)
             finish()
-        }
-    }
-
-    private fun addFundsToUserBalance(amount: Double) {
-        val userId = intent.getIntExtra("userId", -1)
-
-        GlobalScope.launch(Dispatchers.IO) {
-            val userDocument = usersCollection.find(Document("UserId", userId)).first()
-
-            if (userDocument != null) {
-                val currentBalance = userDocument.getDouble("Balance") ?: 0.0
-                val newBalance = currentBalance + amount
-                usersCollection.updateOne(Document("UserId", userId), Document("\$set", Document("Balance", newBalance)))
-
-                withContext(Dispatchers.Main) {
-                    showToast("Funds added successfully.")
-                    fetchUserBalance()
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    showToast("User not found.")
-                }
-            }
         }
     }
 
