@@ -9,7 +9,6 @@ import org.bson.Document
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -27,9 +26,15 @@ class ShopMenuActivity : AppCompatActivity() {
     private lateinit var shopImageButton: ImageButton
     private lateinit var walletImageButton: ImageButton
 
+    private lateinit var myButtonDiscounted20: Button
+    private lateinit var myButtonDiscounted40: Button
+    private lateinit var myButtonNormal20: Button
+    private lateinit var myButtonNormal40: Button
+
     private lateinit var mongoClient: MongoClient
     private lateinit var mongoDatabase: MongoDatabase
     private lateinit var usersCollection: MongoCollection<Document>
+    private lateinit var ticketsCollection: MongoCollection<Document>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_menu)
@@ -40,10 +45,16 @@ class ShopMenuActivity : AppCompatActivity() {
         shopImageButton = findViewById(R.id.shopImageButton)
         walletImageButton = findViewById(R.id.walletImageButton)
 
+        myButtonDiscounted20 = findViewById(R.id.myButtonDiscounted20)
+        myButtonDiscounted40 = findViewById(R.id.myButtonDiscounted40)
+        myButtonNormal20 = findViewById(R.id.myButtonNormal20)
+        myButtonNormal40 = findViewById(R.id.myButtonNormal40)
+
         try {
             mongoClient = MongoDBHelper.connect()
             mongoDatabase = MongoDBHelper.getDatabase(mongoClient)
             usersCollection = mongoDatabase.getCollection("Users")
+            ticketsCollection = mongoDatabase.getCollection("Tickets")
         } catch (e: Exception) {
             e.printStackTrace()
             showToast("Error connecting to the database: ${e.message}")
@@ -76,6 +87,106 @@ class ShopMenuActivity : AppCompatActivity() {
             intent.putExtra("userId", userId)
             startActivity(intent)
             finish()
+        }
+
+        myButtonDiscounted20.setOnClickListener {
+            buyTicket("Ulgowy", 20, 2.20)
+        }
+
+        myButtonDiscounted40.setOnClickListener {
+            buyTicket("Ulgowy", 40, 2.80)
+        }
+
+        myButtonNormal20.setOnClickListener {
+            buyTicket("Normalny", 20, 4.40)
+        }
+
+        myButtonNormal40.setOnClickListener {
+            buyTicket("Normalny", 40, 5.60)
+        }
+    }
+
+    private fun buyTicket(type: String, time: Int, price: Double) {
+        val userId = intent.getIntExtra("userId", -1)
+
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val userDocument = usersCollection.find(Document("UserId", userId)).first()
+
+                if (userDocument != null) {
+                    val currentBalance = userDocument.getDouble("Balance") ?: 0.0
+
+                    if (currentBalance >= price) {
+                        val highestTicketId =
+                            ticketsCollection.find().sort(Document("TicketId", -1)).limit(1)
+                                .first()?.getInteger("TicketId") ?: 0
+                        val ticketId = highestTicketId + 1
+
+                        val ticketDocument = Document("UserId", userId)
+                            .append("TicketId", ticketId)
+                            .append("Type", type)
+                            .append("Time", time)
+                            .append("Price", price)
+                            .append("TimeActivation", null)
+                            .append("TimeExpiration", null)
+                            .append("IsActive", false)
+                            .append("QrCodeImageBytes", null)
+
+                        insertTicket(ticketDocument)
+                        updateBalance(userId, price)
+
+                    } else {
+                        // Insufficient balance, show an error message
+                        withContext(Dispatchers.Main) {
+                            showToast("Not enough balance to buy the ticket!")
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                showToast("Error buying ticket: ${e.message}")
+            }
+        }
+    }
+
+    private fun insertTicket(ticketDocument: Document) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val ticketsCollection = mongoDatabase.getCollection("Tickets")
+                ticketsCollection.insertOne(ticketDocument)
+
+                withContext(Dispatchers.Main) {
+                    showToast("Ticket bought successfully!")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                showToast("Error inserting ticket: ${e.message}")
+            }
+        }
+    }
+
+    private fun updateBalance(userId: Int, amount: Double) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val userDocument = usersCollection.find(Document("UserId", userId)).first()
+
+                if (userDocument != null) {
+                    val currentBalance = userDocument.getDouble("Balance") ?: 0.0
+                    val newBalance = currentBalance - amount
+
+                    usersCollection.updateOne(
+                        Document("UserId", userId),
+                        Document("\$set", Document("Balance", newBalance))
+                    )
+
+                    withContext(Dispatchers.Main) {
+                        balanceTextView.text = "Balance: $newBalance zł"
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                showToast("Error updating balance: ${e.message}")
+            }
         }
     }
 
