@@ -1,6 +1,7 @@
 package com.example.transitifymobile
 
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
@@ -14,10 +15,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.util.Calendar
 import java.util.Date
 
@@ -119,6 +123,7 @@ class TicketsMenuActivity : AppCompatActivity() {
 
                     val isActive = ticket.getBoolean("IsActive") ?: false
                     val ticketId = ticket.getInteger("TicketId")
+                    val userId = ticket.getInteger("UserId")
                     activateButton.tag = ticketId
 
                     val ticketTime = ticket.getInteger("Time")
@@ -127,7 +132,26 @@ class TicketsMenuActivity : AppCompatActivity() {
                         activateButton.visibility = View.GONE
                         showButton.visibility = View.VISIBLE
                         showButton.setOnClickListener {
-                            showToast("Show button clicked for TicketId: $ticketId")
+                            GlobalScope.launch(Dispatchers.IO) {
+                                val userDocument = usersCollection.find(Document("UserId", userId)).first()
+
+                                if (userDocument != null) {
+                                    val name = userDocument.getString("Name") ?: ""
+                                    val surname = userDocument.getString("Surname") ?: ""
+                                    val type = ticket.getString("Type") ?: ""
+                                    val timeActivation = ticket.getDate("TimeActivation")
+                                    val timeExpiration = ticket.getDate("TimeExpiration")
+
+                                    val qrCodeBytes = generateQRCode(name, surname, type, timeActivation, timeExpiration)
+
+                                    withContext(Dispatchers.Main) {
+                                        val intent = Intent(this@TicketsMenuActivity, ShowTicketActivity::class.java)
+                                        intent.putExtra("qrCodeBytes", qrCodeBytes)
+                                        intent.putExtra("userId", userId)
+                                        startActivity(intent)
+                                    }
+                                }
+                            }
                         }
                     } else {
                         activateButton.visibility = View.VISIBLE
@@ -145,6 +169,15 @@ class TicketsMenuActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun generateQRCode(Name: String, Surname: String, Type: String, TimeActivation: Date, TimeExpiration: Date): ByteArray {
+        val userDetails = "Imie: $Name\nNazwisko: $Surname\nTyp biletu: $Type\nData aktywacji: $TimeActivation\nData wygasniecia: $TimeExpiration"
+        val barcodeEncoder = BarcodeEncoder()
+        val bitmap = barcodeEncoder.encodeBitmap(userDetails, BarcodeFormat.QR_CODE, 1200, 1200)
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        return outputStream.toByteArray()
     }
 
     private fun updateTicketActivationTime(ticketId: Int, ticketTime: Int) {
@@ -208,7 +241,7 @@ class TicketsMenuActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, LoginAndRegisterActivity::class.java)
         startActivity(intent)
         finish()
     }

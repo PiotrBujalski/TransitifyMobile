@@ -41,6 +41,9 @@
         <activity
             android:name=".ShopMenuActivity"
             android:exported="false" />
+        <activity
+            android:name=".ShowTicketActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

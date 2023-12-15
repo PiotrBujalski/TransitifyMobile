@@ -157,7 +157,7 @@ class PaymentMenuActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, LoginAndRegisterActivity::class.java)
         startActivity(intent)
         finish()
     }

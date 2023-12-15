@@ -130,7 +130,6 @@ class ShopMenuActivity : AppCompatActivity() {
                             .append("TimeActivation", null)
                             .append("TimeExpiration", null)
                             .append("IsActive", false)
-                            .append("QrCodeImageBytes", null)
 
                         insertTicket(ticketDocument)
                         updateBalance(userId, price)
@@ -224,7 +223,7 @@ class ShopMenuActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, LoginAndRegisterActivity::class.java)
         startActivity(intent)
         finish()
     }
